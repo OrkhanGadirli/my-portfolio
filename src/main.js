@@ -1,5 +1,6 @@
 import './style.css'
 import { firebaseReady, loadPublishedProjects } from './firebase.js'
+import { studioMarkup, startStudio } from './agents.js'
 
 document.querySelector('#app').innerHTML = `
   <main class="shell">
@@ -12,15 +13,17 @@ document.querySelector('#app').innerHTML = `
       <div class="hero-copy">
         <p class="eyebrow">Portfolio / ilkin quruluş</p>
         <h1 id="hero-title">Yeni bir yer<br /><em>qurulur.</em></h1>
-        <p class="lead">Layihələrimi, iş tərzimi və hekayəmi burada paylaşacağam. Hazırda əsas texniki quruluşu və kiçik köməkçiləri hazırlayıram.</p>
-        <a class="text-link" href="#projects">Layihə sahəsinə bax <span aria-hidden="true">↘</span></a>
+        <p class="lead">Layihələrimi, iş tərzimi və hekayəmi burada paylaşacağam. Hələlik balaca köməkçilərim emalatxanada iş başındadır.</p>
+        <a class="text-link" href="#studio">Agentlərlə tanış ol <span aria-hidden="true">↘</span></a>
       </div>
       <div class="mascot-stage" aria-label="İki animasiyalı, şirin köməkçi agent">
         <span class="stage-glow" aria-hidden="true"></span>
-        <img class="mascot mascot-coder" src="${import.meta.env.BASE_URL}mascots/coder.png" alt="Noutbukla işləyən balaca köməkçi" />
-        <img class="mascot mascot-guide" src="${import.meta.env.BASE_URL}mascots/guide.png" alt="Qulaqlıqla əl yelləyən balaca köməkçi" />
+        <img class="mascot mascot-coder" src="${import.meta.env.BASE_URL}mascots/coder.webp" alt="Noutbukla işləyən balaca köməkçi" />
+        <img class="mascot mascot-guide" src="${import.meta.env.BASE_URL}mascots/guide.webp" alt="Qulaqlıqla əl yelləyən balaca köməkçi" />
       </div>
     </section>
+
+    ${studioMarkup}
 
     <section id="projects" class="projects" aria-labelledby="projects-title">
       <div class="section-heading">
@@ -38,6 +41,8 @@ document.querySelector('#app').innerHTML = `
     </footer>
   </main>
 `
+
+startStudio()
 
 const list = document.querySelector('#projects-list')
 const status = document.querySelector('#backend-status')

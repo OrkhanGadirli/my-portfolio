@@ -42,4 +42,4 @@ Bu üç alət saytın işləmə vaxtı kitabxanası deyil. Mənbələri ayrıca 
 
 ## Personajlar
 
-`public/mascots/` içindəki iki şəffaf vizual istifadəçinin göndərdiyi şəkildən ilhamlanaraq yaradılıb. Hər biri saytda ayrıca CSS animasiyası ilə hərəkət edir; hərəkəti azaltma ayarı olanlarda animasiya dayanır.
+`public/mascots/` içində istifadəçinin göndərdiyi şəkildən ilhamlanan altı şəffaf WebP personaj var. Ana hissədə iki agent görünür; emalatxanada isə altısı iş nöqtələri arasında hərəkət edir. Agentə toxunanda gördüyü işin qısa təsviri çıxır. Hərəkəti səhifədə dayandırmaq olar; cihazda hərəkəti azaltma ayarı aktivdirsə, emalatxana sakit qalır.
