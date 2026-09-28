@@ -1,0 +1,49 @@
+[project]
+name = "phone-harness"
+version = "0.3.0"
+description = "Let an agent drive a real phone: an iPhone through macOS iPhone Mirroring, an Android over adb, or a rented cloud Android"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+keywords = ["iphone", "android", "adb", "automation", "agent", "iphone-mirroring", "cloud-phone"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Testing",
+]
+dependencies = [
+    # iPhone control (iPhone Mirroring, Vision OCR) needs macOS. Android is
+    # plain adb and installs everywhere; these are skipped off macOS.
+    "pyobjc-framework-Quartz; sys_platform == 'darwin'",
+    "pyobjc-framework-Vision; sys_platform == 'darwin'",
+    "pyobjc-framework-Cocoa; sys_platform == 'darwin'",
+    "pyobjc-framework-ApplicationServices; sys_platform == 'darwin'",
+]
+
+[project.urls]
+Homepage = "https://phone-harness.com"
+Repository = "https://github.com/ShawnPana/phone-harness"
+Issues = "https://github.com/ShawnPana/phone-harness/issues"
+
+[project.scripts]
+phone-harness = "phone_harness.run:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/phone_harness"]
+
+# The skill text ships inside the package so `phone-harness skill` works
+# from an installed wheel, not only from a checkout.
+[tool.hatch.build.targets.wheel.force-include]
+"SKILL.md" = "phone_harness/SKILL.md"
+
+[tool.hatch.build.targets.sdist]
+include = ["src/phone_harness", "SKILL.md", "onboarding.md", "README.md", "LICENSE", "install.md"]
