@@ -9,7 +9,7 @@ export function startRoamers() {
   layer.innerHTML = `
     ${roamingIds.map((index) => {
       const agent = agents[index]
-      return `<button class="roamer" type="button" data-agent="${index}" data-facing="right" aria-label="${agent.name}: ${agent.task}">
+      return `<button class="roamer" type="button" data-agent="${index}" data-facing="right" style="--idle-delay:${-index * .57}s" aria-label="${agent.name}: ${agent.task}">
         <span class="roamer-tip" aria-hidden="true">${agent.task}</span>
         ${characterMarkup(agent)}
       </button>`
@@ -77,6 +77,7 @@ export function startRoamers() {
     const distance = Math.hypot(target.x - positions[index].x, target.y - positions[index].y)
     const duration = Math.max(1400, Math.min(10000, distance / 75 * 1000))
     button.dataset.facing = target.x < positions[index].x ? 'left' : 'right'
+    button.style.setProperty('--step-duration', `${(.63 + Math.random() * .13).toFixed(2)}s`)
     button.classList.remove('is-working')
     button.classList.add('is-traveling')
     place(index, target.x, target.y, duration)
@@ -108,9 +109,13 @@ export function startRoamers() {
 
   movers.forEach((button, index) => button.addEventListener('click', () => {
     button.classList.add('is-speaking')
+    button.classList.remove('is-reacting')
+    void button.offsetWidth
+    button.classList.add('is-reacting')
     button.querySelector('.roamer-tip').textContent = agents[roamingIds[index]].detail
     window.setTimeout(() => {
       button.classList.remove('is-speaking')
+      button.classList.remove('is-reacting')
       button.querySelector('.roamer-tip').textContent = agents[roamingIds[index]].task
     }, 3500)
   }))

@@ -32,7 +32,7 @@ export const studioMarkup = `
       <div class="studio-table studio-table-right" aria-hidden="true"></div>
       ${agents.map((agent, index) => {
         const [x, y] = desktopSpots[starts[index]]
-        return `<button class="studio-agent" type="button" data-agent="${index}" data-facing="right" style="--x:${x}%;--y:${y}%;--duration:3s" aria-label="${agent.name}: ${agent.task}">
+        return `<button class="studio-agent" type="button" data-agent="${index}" data-facing="right" style="--x:${x}%;--y:${y}%;--duration:3s;--idle-delay:${-index * .47}s" aria-label="${agent.name}: ${agent.task}">
           <span class="agent-task" aria-hidden="true">${agent.task}</span>
           <span class="agent-picture">${characterMarkup(agent)}</span>
           <span class="agent-name" aria-hidden="true">${agent.name}</span>
@@ -88,6 +88,7 @@ export function startStudio(onMotionChange = () => {}) {
     moving[index] = true
     button.dataset.facing = to[0] < from[0] ? 'left' : 'right'
     button.style.setProperty('--duration', `${duration}ms`)
+    button.style.setProperty('--step-duration', `${(.61 + Math.random() * .12).toFixed(2)}s`)
     button.style.setProperty('--x', `${to[0]}%`)
     button.style.setProperty('--y', `${to[1]}%`)
     button.classList.add('is-traveling')
@@ -115,6 +116,10 @@ export function startStudio(onMotionChange = () => {}) {
     const agent = agents[index]
     note.textContent = `${agent.name}: ${agent.detail}`
     buttons.forEach((item) => item.classList.toggle('is-selected', item === button))
+    button.classList.remove('is-reacting')
+    void button.offsetWidth
+    button.classList.add('is-reacting')
+    window.setTimeout(() => button.classList.remove('is-reacting'), 720)
   }))
 
   toggle.addEventListener('click', () => {
