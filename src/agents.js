@@ -1,4 +1,5 @@
 import { agents, characterMarkup } from './characters.js'
+import { setExpression } from './expressions.js'
 
 const desktopSpots = [
   [12, 28], [36, 27], [63, 27], [88, 28],
@@ -32,7 +33,7 @@ export const studioMarkup = `
       <div class="studio-table studio-table-right" aria-hidden="true"></div>
       ${agents.map((agent, index) => {
         const [x, y] = desktopSpots[starts[index]]
-        return `<button class="studio-agent" type="button" data-agent="${index}" data-facing="right" style="--x:${x}%;--y:${y}%;--duration:3s" aria-label="${agent.name}: ${agent.task}">
+        return `<button class="studio-agent" type="button" data-agent="${index}" data-facing="right" style="--x:${x}%;--y:${y}%;--duration:3s;--idle-delay:${-index * .63}s" aria-label="${agent.name}: ${agent.task}">
           <span class="agent-task" aria-hidden="true">${agent.task}</span>
           <span class="agent-picture">${characterMarkup(agent)}</span>
           <span class="agent-name" aria-hidden="true">${agent.name}</span>
@@ -87,13 +88,16 @@ export function startStudio(onMotionChange = () => {}) {
     places[index] = target
     moving[index] = true
     button.dataset.facing = to[0] < from[0] ? 'left' : 'right'
+    button.querySelector('.puppet-rig')?.style.setProperty('--look-x', `${to[0] < from[0] ? -1.7 : 1.7}px`)
     button.style.setProperty('--duration', `${duration}ms`)
+    button.style.setProperty('--step-duration', `${Math.max(.47, Math.min(.74, duration / distance * 55 / 1000)).toFixed(2)}s`)
     button.style.setProperty('--x', `${to[0]}%`)
     button.style.setProperty('--y', `${to[1]}%`)
     button.classList.add('is-traveling')
     window.setTimeout(() => {
       moving[index] = false
       button.classList.remove('is-traveling')
+      setExpression(button, Math.random() < .65 ? 'happy' : 'curious', 1700)
       schedule(index)
     }, duration)
   }
@@ -115,6 +119,7 @@ export function startStudio(onMotionChange = () => {}) {
     const agent = agents[index]
     note.textContent = `${agent.name}: ${agent.detail}`
     buttons.forEach((item) => item.classList.toggle('is-selected', item === button))
+    setExpression(button, 'happy', 2700)
   }))
 
   toggle.addEventListener('click', () => {
