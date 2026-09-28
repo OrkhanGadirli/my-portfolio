@@ -1,16 +1,17 @@
-const agents = [
-  { name: 'Kodçu', image: 'coder', task: 'Kod yazır', detail: 'Yeni ideyaları işlək hissələrə çevirir.' },
-  { name: 'Bələdçi', image: 'guide', task: 'Zəng edir', detail: 'Komandanın suallarını cavablandırır.' },
-  { name: 'Araşdırmaçı', image: 'researcher', task: 'Qeydlər aparır', detail: 'Maraqlı fikirləri tapıb dəftərinə yazır.' },
-  { name: 'Rəssam', image: 'artist', task: 'Rəng seçir', detail: 'Səhnəyə yeni rənglər və formalar gətirir.' },
-  { name: 'Elçi', image: 'messenger', task: 'Məktub daşıyır', detail: 'Xəbərləri bir iş masasından o birinə aparır.' },
-  { name: 'Bağban', image: 'gardener', task: 'Gülə baxır', detail: 'Emalatxananın balaca bitkilərinə qulluq edir.' },
-]
+import { agents, characterMarkup } from './characters.js'
 
-const spots = [
-  [17, 38], [50, 34], [83, 38],
-  [17, 76], [50, 73], [83, 76],
+const desktopSpots = [
+  [12, 28], [36, 27], [63, 27], [88, 28],
+  [13, 54], [38, 53], [62, 53], [87, 54],
+  [12, 80], [37, 79], [63, 79], [88, 80],
 ]
+const mobileSpots = [
+  [18, 17], [50, 17], [82, 17],
+  [18, 39], [50, 39], [82, 39],
+  [18, 61], [50, 61], [82, 61],
+  [18, 83], [50, 83], [82, 83],
+]
+const starts = [0, 2, 3, 5, 6, 8, 9, 11]
 
 export const studioMarkup = `
   <section id="studio" class="studio" aria-labelledby="studio-title">
@@ -18,54 +19,96 @@ export const studioMarkup = `
       <div>
         <p class="eyebrow">Balaca emalatxana / canlı səhnə</p>
         <h2 id="studio-title">Hamı iş başında<span>.</span></h2>
-        <p>Altı balaca agent burada öz işi ilə məşğuldur. Birinə toxun, nə etdiyini gör.</p>
+        <p>Altı mərcan köməkçiyə ChatGPT üçün düşündüyüm iki yeni dost qoşuldu: nanə rəngli Fikir və firuzəyi Yoxlayıcı. Hər biri öz yolunu seçir.</p>
       </div>
       <button class="motion-toggle" type="button" aria-pressed="false">Hərəkəti dayandır <span aria-hidden="true">Ⅱ</span></button>
     </div>
-    <div class="studio-scene" aria-label="Altı agentin hərəkət etdiyi emalatxana">
+    <div class="studio-scene" aria-label="Səkkiz agentin sərbəst gəzdiyi emalatxana">
       <div class="studio-window studio-window-one" aria-hidden="true"></div>
       <div class="studio-window studio-window-two" aria-hidden="true"></div>
       <div class="studio-shelf" aria-hidden="true"><i></i><i></i><i></i></div>
       <div class="studio-rug" aria-hidden="true"></div>
       <div class="studio-table studio-table-left" aria-hidden="true"></div>
       <div class="studio-table studio-table-right" aria-hidden="true"></div>
-      ${agents.map((agent, index) => `
-        <button class="studio-agent" type="button" data-agent="${index}" style="--x:${spots[index][0]}%;--y:${spots[index][1]}%;--delay:${index * -.38}s" aria-label="${agent.name}: ${agent.task}">
+      ${agents.map((agent, index) => {
+        const [x, y] = desktopSpots[starts[index]]
+        return `<button class="studio-agent" type="button" data-agent="${index}" data-facing="right" style="--x:${x}%;--y:${y}%;--duration:3s" aria-label="${agent.name}: ${agent.task}">
           <span class="agent-task" aria-hidden="true">${agent.task}</span>
-          <span class="agent-picture"><img src="${import.meta.env.BASE_URL}mascots/${agent.image}.webp" alt="" draggable="false" /></span>
+          <span class="agent-picture">${characterMarkup(agent)}</span>
           <span class="agent-name" aria-hidden="true">${agent.name}</span>
-        </button>`).join('')}
+        </button>`
+      }).join('')}
     </div>
-    <p class="studio-note" id="agent-note" aria-live="polite">Emalatxanada hər agentin öz balaca işi var.</p>
+    <p class="studio-note" id="agent-note" aria-live="polite">Bir agentə toxun, nə etdiyini gör.</p>
   </section>
 `
 
-export function startStudio() {
+export function startStudio(onMotionChange = () => {}) {
   const studio = document.querySelector('.studio')
   const scene = studio.querySelector('.studio-scene')
   const buttons = [...scene.querySelectorAll('.studio-agent')]
   const toggle = studio.querySelector('.motion-toggle')
   const note = studio.querySelector('#agent-note')
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
-  let step = 0
-  let timer
+  const places = [...starts]
+  const nextTimers = new Array(agents.length)
+  const moving = agents.map(() => false)
   let visible = false
   let paused = reducedMotion.matches
 
-  const move = () => {
-    step = (step + 1) % spots.length
-    buttons.forEach((button, index) => {
-      const [x, y] = spots[(index + step) % spots.length]
-      button.style.setProperty('--x', `${x}%`)
-      button.style.setProperty('--y', `${y}%`)
-      button.classList.add('is-traveling')
-    })
-    window.setTimeout(() => buttons.forEach((button) => button.classList.remove('is-traveling')), 3100)
+  const spots = () => window.matchMedia('(max-width: 600px)').matches ? mobileSpots : desktopSpots
+  const clearNext = () => nextTimers.forEach(window.clearTimeout)
+  const canMove = () => visible && !paused && !reducedMotion.matches
+
+  const schedule = (index) => {
+    window.clearTimeout(nextTimers[index])
+    if (canMove() && !moving[index]) nextTimers[index] = window.setTimeout(() => move(index), 1800 + Math.random() * 4800)
   }
 
-  const schedule = () => {
-    window.clearInterval(timer)
-    if (visible && !paused && !reducedMotion.matches) timer = window.setInterval(move, 6500)
+  const move = (index) => {
+    if (!canMove()) return
+    const points = spots()
+    const occupied = new Set(places)
+    const from = points[places[index]]
+    const free = points.map((_, spot) => spot).filter((spot) => {
+      if (occupied.has(spot)) return false
+      const candidate = points[spot]
+      const dx = Math.abs(candidate[0] - from[0])
+      const dy = Math.abs(candidate[1] - from[1])
+      return (dx < 3 && dy < 29) || (dy < 3 && dx < 35)
+    })
+    if (!free.length) return schedule(index)
+
+    const target = free[Math.floor(Math.random() * free.length)]
+    const to = points[target]
+    const distance = Math.hypot((to[0] - from[0]) * scene.clientWidth / 100, (to[1] - from[1]) * scene.clientHeight / 100)
+    const duration = Math.max(2200, Math.min(6200, distance / 88 * 1000))
+    const button = buttons[index]
+    places[index] = target
+    moving[index] = true
+    button.dataset.facing = to[0] < from[0] ? 'left' : 'right'
+    button.style.setProperty('--duration', `${duration}ms`)
+    button.style.setProperty('--x', `${to[0]}%`)
+    button.style.setProperty('--y', `${to[1]}%`)
+    button.classList.add('is-traveling')
+    window.setTimeout(() => {
+      moving[index] = false
+      button.classList.remove('is-traveling')
+      schedule(index)
+    }, duration)
+  }
+
+  const refresh = () => {
+    clearNext()
+    if (canMove()) agents.forEach((_, index) => schedule(index))
+  }
+
+  const syncLayout = () => {
+    const points = spots()
+    buttons.forEach((button, index) => {
+      button.style.setProperty('--x', `${points[places[index]][0]}%`)
+      button.style.setProperty('--y', `${points[places[index]][1]}%`)
+    })
   }
 
   buttons.forEach((button, index) => button.addEventListener('click', () => {
@@ -79,7 +122,8 @@ export function startStudio() {
     toggle.setAttribute('aria-pressed', String(paused))
     toggle.innerHTML = paused ? 'Hərəkəti başlat <span aria-hidden="true">▶</span>' : 'Hərəkəti dayandır <span aria-hidden="true">Ⅱ</span>'
     scene.classList.toggle('is-paused', paused)
-    schedule()
+    onMotionChange(paused)
+    refresh()
   })
 
   reducedMotion.addEventListener('change', () => {
@@ -93,7 +137,8 @@ export function startStudio() {
       toggle.disabled = false
       toggle.innerHTML = 'Hərəkəti başlat <span aria-hidden="true">▶</span>'
     }
-    schedule()
+    onMotionChange(paused)
+    refresh()
   })
 
   if (paused) {
@@ -105,7 +150,9 @@ export function startStudio() {
 
   const observer = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting
-    schedule()
+    refresh()
   }, { threshold: 0.1 })
   observer.observe(scene)
+  window.addEventListener('resize', syncLayout)
+  syncLayout()
 }

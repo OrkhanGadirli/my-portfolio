@@ -42,4 +42,4 @@ Bu üç alət saytın işləmə vaxtı kitabxanası deyil. Mənbələri ayrıca 
 
 ## Personajlar
 
-`public/mascots/` içində istifadəçinin göndərdiyi şəkildən ilhamlanan altı şəffaf WebP personaj var. Ana hissədə iki agent görünür; emalatxanada isə altısı iş nöqtələri arasında hərəkət edir. Agentə toxunanda gördüyü işin qısa təsviri çıxır. Hərəkəti səhifədə dayandırmaq olar; cihazda hərəkəti azaltma ayarı aktivdirsə, emalatxana sakit qalır.
+`public/mascots/` içində istifadəçinin göndərdiyi videodan ilhamlanan altı mərcan agent və ChatGPT üçün hazırlanmış iki orijinal nanə-firuzəyi personaj var. Emalatxanada səkkiz agent qonşu boş yerlər arasında öz yolu ilə gəzir. Yeriyərkən gövdə və ayaqlar ayrıca hərəkət edir; dayananda hərəsinin iş görünüşü qayıdır. Səhifənin digər hissələrində eyni anda dörd agent (telefonda iki) gəzir və növbə ilə dəyişir. Agentə toxunanda işi görünür. Hərəkəti dayandırmaq və gəzən agentləri gizlətmək mümkündür; cihazın hərəkəti azaltma ayarı da nəzərə alınır.

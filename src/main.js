@@ -1,6 +1,10 @@
 import './style.css'
 import { firebaseReady, loadPublishedProjects } from './firebase.js'
 import { studioMarkup, startStudio } from './agents.js'
+import { startRoamers } from './roamers.js'
+import { agents, characterMarkup } from './characters.js'
+
+const chatgptAgents = agents.filter((agent) => agent.family === 'gpt')
 
 document.querySelector('#app').innerHTML = `
   <main class="shell">
@@ -19,11 +23,27 @@ document.querySelector('#app').innerHTML = `
       <div class="mascot-stage" aria-label="İki animasiyalı, şirin köməkçi agent">
         <span class="stage-glow" aria-hidden="true"></span>
         <img class="mascot mascot-coder" src="${import.meta.env.BASE_URL}mascots/coder.webp" alt="Noutbukla işləyən balaca köməkçi" />
-        <img class="mascot mascot-guide" src="${import.meta.env.BASE_URL}mascots/guide.webp" alt="Qulaqlıqla əl yelləyən balaca köməkçi" />
+        <span class="mascot mascot-guide is-traveling" role="img" aria-label="Qulaqlıqla yeriyən balaca köməkçi">${characterMarkup(agents[1])}</span>
       </div>
     </section>
 
     ${studioMarkup}
+
+    <section class="gpt-concepts" aria-labelledby="gpt-title">
+      <div class="gpt-intro">
+        <p class="eyebrow">Yeni personaj təklifi</p>
+        <h2 id="gpt-title">ChatGPT tərəfi</h2>
+        <p>Bunlar ChatGPT üçün hazırladığım orijinal personaj fikirləridir. Mərcan agentlərdən fərqli olaraq yumru siluetləri, nanə və firuzəyi rəngləri var.</p>
+      </div>
+      <div class="gpt-cards">
+        ${chatgptAgents.map((agent) => `
+          <article class="gpt-card">
+            <img src="${import.meta.env.BASE_URL}mascots/${agent.image}.webp" alt="${agent.name} adlı yumşaq personaj" loading="lazy" />
+            <div><h3>${agent.name}</h3><p>${agent.task}. ${agent.detail}</p></div>
+          </article>
+        `).join('')}
+      </div>
+    </section>
 
     <section id="projects" class="projects" aria-labelledby="projects-title">
       <div class="section-heading">
@@ -42,7 +62,8 @@ document.querySelector('#app').innerHTML = `
   </main>
 `
 
-startStudio()
+const roamers = startRoamers()
+startStudio(roamers.setPaused)
 
 const list = document.querySelector('#projects-list')
 const status = document.querySelector('#backend-status')
