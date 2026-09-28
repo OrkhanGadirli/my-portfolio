@@ -3,7 +3,6 @@ import { firebaseReady, loadPublishedProjects } from './firebase.js'
 import { studioMarkup, startStudio } from './agents.js'
 import { startRoamers } from './roamers.js'
 import { agents, characterMarkup } from './characters.js'
-import { startExpressions } from './expressions.js'
 
 const chatgptAgents = agents.filter((agent) => agent.family === 'gpt')
 
@@ -65,7 +64,6 @@ document.querySelector('#app').innerHTML = `
 
 const roamers = startRoamers()
 startStudio(roamers.setPaused)
-startExpressions()
 
 const list = document.querySelector('#projects-list')
 const status = document.querySelector('#backend-status')

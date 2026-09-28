@@ -1,5 +1,3 @@
-import { puppetMarkup } from './puppet.js'
-
 export const agents = [
   { name: 'Kodçu', image: 'coder', walkImage: 'coder-walk', task: 'Kod yazır', detail: 'Yeni ideyaları işlək hissələrə çevirir.', family: 'claude' },
   { name: 'Bələdçi', image: 'guide', task: 'Zəng edir', detail: 'Komandanın suallarını cavablandırır.', family: 'claude' },
@@ -12,6 +10,16 @@ export const agents = [
 ]
 
 export function characterMarkup(agent) {
-  const index = agents.indexOf(agent)
-  return `<span class="character" data-family="${agent.family}">${puppetMarkup(agent, index)}</span>`
+  const portrait = `${import.meta.env.BASE_URL}mascots/${agent.image}.webp`
+  const walking = `${import.meta.env.BASE_URL}mascots/${agent.walkImage || agent.image}.webp`
+  return `
+    <span class="character" data-family="${agent.family}">
+      <span class="character-shadow" aria-hidden="true"></span>
+      <img class="character-still" src="${portrait}" alt="" draggable="false" />
+      <span class="character-walk" aria-hidden="true">
+        <img class="walk-leg walk-leg-left" src="${walking}" alt="" draggable="false" />
+        <img class="walk-leg walk-leg-right" src="${walking}" alt="" draggable="false" />
+        <img class="walk-core" src="${walking}" alt="" draggable="false" />
+      </span>
+    </span>`
 }

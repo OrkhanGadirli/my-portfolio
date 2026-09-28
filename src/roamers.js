@@ -1,5 +1,4 @@
 import { agents, characterMarkup } from './characters.js'
-import { setExpression } from './expressions.js'
 
 const roamingIds = [0, 6, 4, 7, 1, 2, 3, 5]
 
@@ -10,7 +9,7 @@ export function startRoamers() {
   layer.innerHTML = `
     ${roamingIds.map((index) => {
       const agent = agents[index]
-      return `<button class="roamer" type="button" data-agent="${index}" data-facing="right" style="--idle-delay:${-index * .71}s" aria-label="${agent.name}: ${agent.task}">
+      return `<button class="roamer" type="button" data-agent="${index}" data-facing="right" aria-label="${agent.name}: ${agent.task}">
         <span class="roamer-tip" aria-hidden="true">${agent.task}</span>
         ${characterMarkup(agent)}
       </button>`
@@ -78,15 +77,12 @@ export function startRoamers() {
     const distance = Math.hypot(target.x - positions[index].x, target.y - positions[index].y)
     const duration = Math.max(1400, Math.min(10000, distance / 75 * 1000))
     button.dataset.facing = target.x < positions[index].x ? 'left' : 'right'
-    button.querySelector('.puppet-rig')?.style.setProperty('--look-x', `${target.x < positions[index].x ? -1.7 : 1.7}px`)
-    button.style.setProperty('--step-duration', `${Math.max(.48, Math.min(.76, duration / distance * 48 / 1000)).toFixed(2)}s`)
     button.classList.remove('is-working')
     button.classList.add('is-traveling')
     place(index, target.x, target.y, duration)
     timers[index] = window.setTimeout(() => {
       button.classList.remove('is-traveling')
       button.classList.add('is-working')
-      setExpression(button, Math.random() < .6 ? 'happy' : 'curious', 1800)
       schedule(index, 1800 + Math.random() * 3600)
     }, duration)
   }
@@ -112,7 +108,6 @@ export function startRoamers() {
 
   movers.forEach((button, index) => button.addEventListener('click', () => {
     button.classList.add('is-speaking')
-    setExpression(button, 'happy', 3500)
     button.querySelector('.roamer-tip').textContent = agents[roamingIds[index]].detail
     window.setTimeout(() => {
       button.classList.remove('is-speaking')
