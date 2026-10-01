@@ -3,7 +3,8 @@ import { firebaseReady } from './firebase.js'
 
 const app = document.querySelector('#app')
 app.dataset.firebaseReady = String(firebaseReady)
-const humanoidVideo = `${import.meta.env.BASE_URL}scene/humanoid.mp4`
+const humanoidVideo = `${import.meta.env.BASE_URL}scene/humanoid-scrub.mp4`
+const humanoidPoster = `${import.meta.env.BASE_URL}scene/humanoid-poster.webp`
 
 app.innerHTML = `
   <div class="site-shell">
@@ -24,7 +25,7 @@ app.innerHTML = `
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-scene" aria-hidden="true">
-          <video class="scene-video" src="${humanoidVideo}" autoplay muted loop playsinline preload="auto"></video>
+          <video class="scene-video" src="${humanoidVideo}" poster="${humanoidPoster}" muted loop playsinline preload="auto"></video>
         </div>
 
         <div class="hero-content">
@@ -99,41 +100,72 @@ app.innerHTML = `
 `
 
 const hero = document.querySelector('.hero')
+const video = document.querySelector('.scene-video')
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)')
+const mouseScrub = window.matchMedia('(min-width: 1024px) and (hover: hover) and (pointer: fine)')
+const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
+let heroVisible = false
+let pointerRatio = null
+let targetTime = null
+let seekFrame = 0
 
-if (!reducedMotion.matches && window.matchMedia('(pointer: fine)').matches) {
-  let frame = 0
-  hero.addEventListener('pointermove', (event) => {
-    if (frame) return
-    frame = requestAnimationFrame(() => {
-      const bounds = hero.getBoundingClientRect()
-      const x = (event.clientX - bounds.left) / bounds.width - 0.5
-      const y = (event.clientY - bounds.top) / bounds.height - 0.5
-      hero.style.setProperty('--pointer-x', `${x * 10}px`)
-      hero.style.setProperty('--pointer-y', `${y * 8}px`)
-      frame = 0
-    })
-  })
-  hero.addEventListener('pointerleave', () => {
-    hero.style.setProperty('--pointer-x', '0px')
-    hero.style.setProperty('--pointer-y', '0px')
-  })
+const seekTowardPointer = () => {
+  seekFrame = 0
+  if (!mouseScrub.matches || reducedMotion.matches || !heroVisible || document.hidden || video.seeking || targetTime === null) return
+  const gap = targetTime - video.currentTime
+  if (Math.abs(gap) < 0.025) return
+  video.currentTime = clamp(video.currentTime + gap * 0.45, 0, video.duration - 0.02)
 }
 
-const video = document.querySelector('.scene-video')
-let heroVisible = false
+const scheduleSeek = () => {
+  if (!seekFrame) seekFrame = requestAnimationFrame(seekTowardPointer)
+}
+
+const timeForPointer = (ratio) => 0.04 + ratio * (video.duration - 0.08)
+
+hero.addEventListener('pointermove', (event) => {
+  if (!mouseScrub.matches || reducedMotion.matches) return
+  const bounds = hero.getBoundingClientRect()
+  pointerRatio = clamp((event.clientX - bounds.left) / bounds.width, 0, 1)
+  if (Number.isFinite(video.duration)) {
+    targetTime = timeForPointer(pointerRatio)
+    scheduleSeek()
+  }
+  hero.style.setProperty('--pointer-x', `${(pointerRatio - 0.5) * 10}px`)
+  hero.style.setProperty('--pointer-y', `${((event.clientY - bounds.top) / bounds.height - 0.5) * 8}px`)
+})
+
+hero.addEventListener('pointerleave', () => {
+  pointerRatio = null
+  if (Number.isFinite(video.duration)) {
+    targetTime = video.duration / 2
+    scheduleSeek()
+  }
+  hero.style.setProperty('--pointer-x', '0px')
+  hero.style.setProperty('--pointer-y', '0px')
+})
+
 const syncPlayback = () => {
   if (reducedMotion.matches || !heroVisible || document.hidden) {
     video.pause()
-    if (reducedMotion.matches && video.readyState > 0) video.currentTime = 0
+    if (reducedMotion.matches && Number.isFinite(video.duration)) video.currentTime = video.duration / 2
+  } else if (mouseScrub.matches) {
+    video.pause()
+    if (Number.isFinite(video.duration)) {
+      targetTime = pointerRatio === null ? video.duration / 2 : timeForPointer(pointerRatio)
+      scheduleSeek()
+    }
   } else {
     video.play().catch(() => {})
   }
 }
+video.addEventListener('loadedmetadata', syncPlayback)
+video.addEventListener('seeked', scheduleSeek)
 const observer = new IntersectionObserver(([entry]) => {
   heroVisible = entry.isIntersecting
   syncPlayback()
 }, { threshold: 0 })
 observer.observe(hero)
 reducedMotion.addEventListener('change', syncPlayback)
+mouseScrub.addEventListener('change', syncPlayback)
 document.addEventListener('visibilitychange', syncPlayback)
