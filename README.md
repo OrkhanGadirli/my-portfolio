@@ -1,6 +1,6 @@
 # My Portfolio
 
-Orxanın portfoliosu üçün ilkin quruluş. Məzmun və son dizayn növbəti mərhələdə müəyyən ediləcək.
+Orxanın portfolio saytı yenidən planlanır. Hazırda saytda müvəqqəti başlanğıc ekranı var; əvvəlki agent səhnəsi çıxarılıb.
 
 - GitHub: https://github.com/OrkhanGadirli/my-portfolio
 - Firebase layihəsi: `orkhan-portfolio-2026`
@@ -11,11 +11,11 @@ Orxanın portfoliosu üçün ilkin quruluş. Məzmun və son dizayn növbəti m�
 2. `.env.example` faylını `.env.local` adı ilə kopyalayın və Firebase web app məlumatlarını daxil edin.
 3. `npm run dev`
 
-Firebase məlumatları daxil edilməsə, səhifə yenə açılır və bağlantının gözlənildiyini göstərir.
+Firebase məlumatları daxil edilməsə də müvəqqəti səhifə açılır.
 
 ## Firebase
 
-Frontend `projects` kolleksiyasında yalnız `published: true` olan sənədləri oxuyur. Sənəd nümunəsi:
+`src/firebase.js` və Firebase konfiqurasiyası saxlanılıb. Gələcək portfolio bölməsi `projects` kolleksiyasında yalnız `published: true` olan sənədləri oxuya bilər. Sənəd nümunəsi:
 
 ```json
 {
@@ -39,7 +39,3 @@ Frontend `projects` kolleksiyasında yalnız `published: true` olan sənədləri
 - [Phone Harness](https://github.com/ShawnPana/phone-harness) `tools/phone-harness` içindədir; Android telefonda test üçün `python -m pip install -e tools/phone-harness`, sonra `adb` və telefon bağlantısı lazımdır. Bu kompüterdə iPhone üçün Mac tələb olunur.
 
 Bu üç alət saytın işləmə vaxtı kitabxanası deyil. Mənbələri ayrıca saxlanılıb, lisenziyaları öz qovluqlarındadır.
-
-## Personajlar
-
-`public/mascots/` içində istifadəçinin göndərdiyi videodan ilhamlanan altı mərcan agent və ChatGPT üçün hazırlanmış iki orijinal nanə-firuzəyi personaj var. Emalatxanada səkkiz agent qonşu boş yerlər arasında öz yolu ilə gəzir. Yeriyərkən gövdə və ayaqlar ayrıca hərəkət edir; dayananda hərəsinin iş görünüşü qayıdır. Səhifənin digər hissələrində eyni anda dörd agent (telefonda iki) gəzir və növbə ilə dəyişir. Agentə toxunanda işi görünür. Hərəkəti dayandırmaq və gəzən agentləri gizlətmək mümkündür; cihazın hərəkəti azaltma ayarı da nəzərə alınır.
