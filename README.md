@@ -15,7 +15,7 @@ Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və v
 
 Firebase məlumatları daxil edilməsə də ön səhifə açılır.
 
-Ön səhnənin generasiya olunmuş şəkilləri `public/scene/window-space.webp`, `public/scene/boy-full.webp` və `public/scene/girl-full.webp` fayllarındadır. Pəncərənin miqyası dar ekranlarda ayrıca tənzimlənir; uşaqların tam boy şəkilləri ayaqların qəfil kəsilməsinin qarşısını alır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
+Ön səhnədə istifadəçinin təqdim etdiyi videodakı humanoid göstərilir: `public/scene/humanoid.mp4`. Mənbə: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4`. Video səssiz və dövrü oynayır; ekrandan çıxanda dayanır. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün video dayandırılır.
 
 ## Firebase
 

@@ -3,8 +3,7 @@ import { firebaseReady } from './firebase.js'
 
 const app = document.querySelector('#app')
 app.dataset.firebaseReady = String(firebaseReady)
-const boyImage = `${import.meta.env.BASE_URL}scene/boy-full.webp`
-const girlImage = `${import.meta.env.BASE_URL}scene/girl-full.webp`
+const humanoidVideo = `${import.meta.env.BASE_URL}scene/humanoid.mp4`
 
 app.innerHTML = `
   <div class="site-shell">
@@ -25,19 +24,7 @@ app.innerHTML = `
     <main id="top">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-scene" aria-hidden="true">
-          <div class="scene-plate"></div>
-          <div class="scene-stars"></div>
-          <div class="scene-meteor"></div>
-          <div class="scene-haze"></div>
-          <div class="character character-boy">
-            <img class="character-body" src="${boyImage}" alt="" width="1024" height="1536" fetchpriority="high" />
-            <img class="character-head" src="${boyImage}" alt="" width="1024" height="1536" fetchpriority="high" />
-          </div>
-          <div class="character character-girl">
-            <img class="character-body" src="${girlImage}" alt="" width="1024" height="1536" fetchpriority="high" />
-            <img class="character-head" src="${girlImage}" alt="" width="1024" height="1536" fetchpriority="high" />
-          </div>
-          <div class="scene-vignette"></div>
+          <video class="scene-video" src="${humanoidVideo}" autoplay muted loop playsinline preload="auto"></video>
         </div>
 
         <div class="hero-content">
@@ -133,20 +120,20 @@ if (!reducedMotion.matches && window.matchMedia('(pointer: fine)').matches) {
   })
 }
 
-const scene = document.querySelector('.hero-scene')
+const video = document.querySelector('.scene-video')
+let heroVisible = false
+const syncPlayback = () => {
+  if (reducedMotion.matches || !heroVisible || document.hidden) {
+    video.pause()
+    if (reducedMotion.matches && video.readyState > 0) video.currentTime = 0
+  } else {
+    video.play().catch(() => {})
+  }
+}
 const observer = new IntersectionObserver(([entry]) => {
-  scene.classList.toggle('is-paused', !entry.isIntersecting)
+  heroVisible = entry.isIntersecting
+  syncPlayback()
 }, { threshold: 0 })
 observer.observe(hero)
-
-if (!reducedMotion.matches) {
-  let scrollFrame = 0
-  window.addEventListener('scroll', () => {
-    if (scrollFrame) return
-    scrollFrame = requestAnimationFrame(() => {
-      const progress = Math.min(1, Math.max(0, window.scrollY / hero.offsetHeight))
-      hero.style.setProperty('--scroll-progress', progress)
-      scrollFrame = 0
-    })
-  }, { passive: true })
-}
+reducedMotion.addEventListener('change', syncPlayback)
+document.addEventListener('visibilitychange', syncPlayback)
