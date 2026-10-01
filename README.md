@@ -1,6 +1,6 @@
 # My Portfolio
 
-Orxanın portfolio saytı. Ön ekranda orijinal pəncərə və kosmos səhnəsi var; oğlan, ulduzlar və işıq kodla yüngül hərəkət edir. İstinad şəklindəki Prime Intellect mətnləri, loqosu və videosu istifadə olunmur.
+Orxanın portfolio saytı. Ön ekranda orijinal pəncərə və kosmos səhnəsi var; oğlan, qız, ulduzlar və işıq kodla yüngül hərəkət edir. Terminal sətri bu repoya aid işlək `git clone` əmrini göstərir. İstinad şəklindəki Prime Intellect mətnləri, loqosu və videosu istifadə olunmur.
 
 Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və vizual bələdçilər üçün bölmə quruluşu var. Real layihə, repo və məqalə məzmunu istifadəçi tərəfindən seçildikcə əlavə olunacaq. Sınanmış repolar şəxsi portfolio işləri kimi təqdim edilmir.
 
@@ -15,7 +15,7 @@ Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və v
 
 Firebase məlumatları daxil edilməsə də ön səhifə açılır.
 
-Ön səhnənin generasiya olunmuş orijinal şəkilləri `public/scene/window-space.webp` və `public/scene/boy.webp` fayllarındadır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
+Ön səhnənin generasiya olunmuş orijinal şəkilləri `public/scene/window-space.webp`, `public/scene/boy.webp` və `public/scene/girl.webp` fayllarındadır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
 
 ## Firebase
 

@@ -4,12 +4,13 @@ import { firebaseReady } from './firebase.js'
 const app = document.querySelector('#app')
 app.dataset.firebaseReady = String(firebaseReady)
 const boyImage = `${import.meta.env.BASE_URL}scene/boy.webp`
+const girlImage = `${import.meta.env.BASE_URL}scene/girl.webp`
 
 app.innerHTML = `
   <div class="site-shell">
     <header class="site-header">
       <a class="brand" href="#top" aria-label="Orxan Qadirli — başlanğıca qayıt">
-        <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
         <span>Orxan Qadirli</span>
       </a>
       <nav class="primary-nav" aria-label="Əsas menyu">
@@ -28,61 +29,76 @@ app.innerHTML = `
           <div class="scene-stars"></div>
           <div class="scene-meteor"></div>
           <div class="scene-haze"></div>
-          <div class="character">
+          <div class="character character-boy">
             <img class="character-body" src="${boyImage}" alt="" width="1024" height="1536" fetchpriority="high" />
             <img class="character-head" src="${boyImage}" alt="" width="1024" height="1536" fetchpriority="high" />
+          </div>
+          <div class="character character-girl">
+            <img class="character-body" src="${girlImage}" alt="" width="1024" height="1536" fetchpriority="high" />
+            <img class="character-head" src="${girlImage}" alt="" width="1024" height="1536" fetchpriority="high" />
           </div>
           <div class="scene-vignette"></div>
         </div>
 
         <div class="hero-content">
-          <p class="hero-kicker">Orxan Qadirlinin şəxsi saytı</p>
-          <h1 id="hero-title">Fikirlərin<br />açıldığı yer.</h1>
-          <p class="hero-description">İşlərim, sınadığım açıq mənbə layihələri, yazılarım və addım-addım vizual bələdçilərim burada bir araya gələcək.</p>
-          <a class="primary-action" href="#portfolio">Saytı kəşf et <span aria-hidden="true">↘</span></a>
+          <p class="hero-kicker"><span aria-hidden="true">//</span> AI mühəndisliyi · şəxsi portfolio</p>
+          <h1 id="hero-title">AI mühəndisliyi.<br />Kod səviyyəsində.</h1>
+          <p class="hero-description">Burada AI mühəndisliyi işlərimi, sınaqdan keçirdiyim açıq mənbə repolarını və texniki qeydlərimi paylaşacağam.</p>
+          <a class="primary-action" href="#portfolio">İşlərə bax <span class="action-arrow" aria-hidden="true">↗</span></a>
+          <div class="terminal" aria-label="Portfolionun GitHub repozitoriyasını klonlama əmri">
+            <div class="terminal-title"><span class="terminal-led" aria-hidden="true"></span> terminal <span>~/portfolio</span></div>
+            <div class="terminal-command"><span class="terminal-prompt" aria-hidden="true">$</span><code>git clone https://github.com/OrkhanGadirli/my-portfolio.git</code><span class="terminal-caret" aria-hidden="true"></span></div>
+          </div>
         </div>
 
         <div class="hero-bottom">
-          <span>Portfolio / 2026</span>
-          <a href="#portfolio">Aşağı sürüşdür <span aria-hidden="true">↓</span></a>
+          <span>ORXAN.QADIRLI / AI ENGINEERING</span>
+          <a href="#portfolio">Aşağı sürüşdür <span class="scroll-arrow" aria-hidden="true">↓</span></a>
         </div>
       </section>
 
+      <nav class="route-strip" aria-label="Bölmələrə sürətli keçid">
+        <a href="#portfolio"><span>01 /</span> Öz işlərim <b aria-hidden="true">↗</b></a>
+        <a href="#repolar"><span>02 /</span> Repo sınaqları <b aria-hidden="true">↗</b></a>
+        <a href="#meqaleler"><span>03 /</span> Məqalələr <b aria-hidden="true">↗</b></a>
+        <a href="#beledciler"><span>04 /</span> Bələdçilər <b aria-hidden="true">↗</b></a>
+      </nav>
+
       <section class="intro-section content-section" id="portfolio" aria-labelledby="portfolio-title">
-        <div class="section-index">Portfolio</div>
+        <div class="section-index">01 / PORTFOLIO</div>
         <div class="section-main">
-          <h2 id="portfolio-title">Bu sayt nə üçündür?</h2>
-          <p>Hazırladığım işləri və öyrəndiklərimi bir yerdə toplamaq üçün. Portfolio hissəsində yalnız öz layihələrim yer alacaq. Digər müəlliflərin repolarını isə ayrıca bölmədə göstərəcəyəm.</p>
-          <div class="section-note">Layihələrin məzmunu və təqdimatı əlavə olunacaq.</div>
+          <h2 id="portfolio-title">Öz işlərim</h2>
+          <p>Bu bölmədə öz layihələrimi problem, yanaşma və işləmə qaydası ilə təqdim edəcəyəm. Başqalarının repoları ayrıca sınaq bölməsində qalacaq.</p>
+          <div class="section-note">// Layihə qeydləri əlavə olunacaq</div>
         </div>
       </section>
 
       <section class="content-section feature-section" id="repolar" aria-labelledby="repos-title">
-        <div class="section-index">Ayrıca kolleksiya</div>
+        <div class="section-index">02 / REPO LAB</div>
         <div class="section-main">
           <h2 id="repos-title">Sınadığım repolar</h2>
-          <p>GitHub-da bəyənib sınaqdan keçirdiyim başqalarına aid layihələr. Hər repo üçün orijinal müəllifə keçid və nə işə yaradığı barədə öz qeydim olacaq.</p>
-          <span class="text-link">Repo seçimləri hazırlanır</span>
+          <p>GitHub-da sınaqdan keçirdiyim başqalarına aid layihələr. Hər birində orijinal müəllifə keçid, quraşdırma qeydləri və nə işə yaradığını yazacağam.</p>
+          <span class="text-link">// Repo qeydləri hazırlanır</span>
         </div>
         <span class="feature-glyph" aria-hidden="true">↗</span>
       </section>
 
       <section class="content-section feature-section" id="meqaleler" aria-labelledby="articles-title">
-        <div class="section-index">Yazılar</div>
+        <div class="section-index">03 / WRITING</div>
         <div class="section-main">
           <h2 id="articles-title">Məqalələr</h2>
-          <p>Şəkilli üz qabığından açılan, rahat oxunan tam məqalələr üçün yer. İlk yazıları paylaşanda burada görünəcəklər.</p>
-          <span class="text-link">Məqalələr hazırlanır</span>
+          <p>AI, kod və infrastruktur mövzularında texniki məqalələr. Hər yazının ayrıca səhifəsi, şəkilli üz qabığı və oxunaqlı kod nümunələri olacaq.</p>
+          <span class="text-link">// İlk məqalə hazırlanır</span>
         </div>
         <span class="feature-glyph" aria-hidden="true">✳</span>
       </section>
 
       <section class="content-section feature-section" id="beledciler" aria-labelledby="guides-title">
-        <div class="section-index">Addım-addım</div>
+        <div class="section-index">04 / GUIDES</div>
         <div class="section-main">
           <h2 id="guides-title">Vizual bələdçilər</h2>
-          <p>“Lokal server necə qurulur?” kimi suallara animasiyalı, aydın cavablar. Bələdçini açanda prosesi mərhələ-mərhələ görmək mümkün olacaq.</p>
-          <span class="text-link">Bələdçilər hazırlanır</span>
+          <p>“Lokal server necə qurulur?” kimi suallara vizual cavablar. Əmrləri, mərhələləri və nəticəni animasiya ilə göstərəcəyəm.</p>
+          <span class="text-link">// Bələdçilər hazırlanır</span>
         </div>
         <span class="feature-glyph" aria-hidden="true">⌘</span>
       </section>
