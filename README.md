@@ -1,6 +1,8 @@
 # My Portfolio
 
-Orxanın portfolio saytı yenidən planlanır. Hazırda saytda müvəqqəti başlanğıc ekranı var; əvvəlki agent səhnəsi çıxarılıb.
+Orxanın portfolio saytı. Ön ekranda orijinal pəncərə və kosmos səhnəsi var; oğlan, ulduzlar və işıq kodla yüngül hərəkət edir. İstinad şəklindəki Prime Intellect mətnləri, loqosu və videosu istifadə olunmur.
+
+Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və vizual bələdçilər üçün bölmə quruluşu var. Real layihə, repo və məqalə məzmunu istifadəçi tərəfindən seçildikcə əlavə olunacaq. Sınanmış repolar şəxsi portfolio işləri kimi təqdim edilmir.
 
 - GitHub: https://github.com/OrkhanGadirli/my-portfolio
 - Firebase layihəsi: `orkhan-portfolio-2026`
@@ -11,7 +13,9 @@ Orxanın portfolio saytı yenidən planlanır. Hazırda saytda müvəqqəti baş
 2. `.env.example` faylını `.env.local` adı ilə kopyalayın və Firebase web app məlumatlarını daxil edin.
 3. `npm run dev`
 
-Firebase məlumatları daxil edilməsə də müvəqqəti səhifə açılır.
+Firebase məlumatları daxil edilməsə də ön səhifə açılır.
+
+Ön səhnənin generasiya olunmuş orijinal şəkilləri `public/scene/window-space.webp` və `public/scene/boy.webp` fayllarındadır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
 
 ## Firebase
 
