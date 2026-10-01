@@ -18,13 +18,14 @@ a:focus-visible { outline: 2px solid #a7d5fb; outline-offset: 5px; }
 .hero { --pointer-x: 0px; --pointer-y: 0px; --scroll-progress: 0; position: relative; display: flex; align-items: center; min-height: max(680px, 100svh); overflow: hidden; background: #080e18; isolation: isolate; }
 .hero-scene, .scene-plate, .scene-stars, .scene-haze, .scene-vignette { position: absolute; inset: 0; }
 .hero-scene { z-index: -1; overflow: hidden; }
-.scene-plate { inset: -2%; background: url('/scene/window-space.webp') center center / cover no-repeat; transform: translate3d(calc(var(--pointer-x) * -.35), calc(var(--pointer-y) * -.35 + var(--scroll-progress) * 24px), 0) scale(1.025); transition: transform 300ms ease-out; }
+.scene-plate { --scene-fade-start: 480px; --scene-fade-end: 640px; background: url('/scene/window-space.webp') right top / auto 600px no-repeat; -webkit-mask-image: linear-gradient(to bottom, #000 0 var(--scene-fade-start), transparent var(--scene-fade-end)); mask-image: linear-gradient(to bottom, #000 0 var(--scene-fade-start), transparent var(--scene-fade-end)); transform: translate3d(calc(var(--pointer-x) * -.35), calc(var(--pointer-y) * -.35 + var(--scroll-progress) * 24px), 0); transition: transform 300ms ease-out; }
 .scene-stars { left: 47%; right: 5%; bottom: 32%; background-image: radial-gradient(circle at 15% 27%, #fff 0 1px, transparent 2px), radial-gradient(circle at 66% 50%, #d5ebff 0 1px, transparent 2px), radial-gradient(circle at 34% 68%, #fff 0 1px, transparent 2px), radial-gradient(circle at 81% 16%, #e5f6ff 0 1px, transparent 2px); background-size: 310px 210px; opacity: .18; animation: stars-breathe 7s ease-in-out infinite alternate; }
 .scene-haze { pointer-events: none; background: radial-gradient(ellipse 24% 34% at 70% 68%, rgba(66, 134, 201, .23), transparent 75%); animation: haze-breathe 9s ease-in-out infinite alternate; }
 .scene-meteor { position: absolute; top: 31%; left: 72%; width: 116px; height: 1px; opacity: 0; background: linear-gradient(90deg, transparent, #eaf6ff 90%, #fff); box-shadow: 0 0 12px #b5dfff; transform: rotate(-22deg) translateX(-160px); animation: meteor 13s linear 4s infinite; }
-.character { position: absolute; aspect-ratio: 2 / 3; translate: 0 calc(var(--scroll-progress) * -28px); filter: drop-shadow(0 16px 36px rgba(0, 0, 0, .46)); animation: character-breathe 5.4s ease-in-out infinite; }
-.character-boy { z-index: 2; width: clamp(170px, 17vw, 248px); left: 64%; bottom: calc(40% - 220px); }
-.character-girl { z-index: 3; width: clamp(140px, 13.2vw, 188px); left: 79%; bottom: calc(29% - 107px); animation-delay: -2.7s; }
+.character { position: absolute; aspect-ratio: 2 / 3; transform-origin: 50% 94%; translate: 0 calc(var(--scroll-progress) * -28px); filter: drop-shadow(0 16px 36px rgba(0, 0, 0, .46)); animation: character-breathe 5.4s ease-in-out infinite; }
+.character-boy { z-index: 2; width: 260px; left: 70%; top: 300px; }
+.character-girl { z-index: 3; width: 240px; left: 82%; top: 325px; animation-delay: -2.7s; }
+.character::after { content: ''; position: absolute; z-index: -1; top: 88%; left: 17%; width: 66%; height: 12px; border-radius: 50%; background: rgba(2, 6, 11, .72); filter: blur(7px); }
 .character img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; }
 .character-body { clip-path: inset(31% 0 0 0); }
 .character-head { clip-path: inset(0 0 65% 0); transform-origin: 50% 33%; animation: character-look 8.6s ease-in-out infinite; }
@@ -89,13 +90,13 @@ a:focus-visible { outline: 2px solid #a7d5fb; outline-offset: 5px; }
   .primary-nav { order: 3; display: grid; grid-template-columns: max-content max-content; width: 100%; margin: 10px 0 0; column-gap: 24px; row-gap: 8px; }
   .primary-nav a { font-size: .73rem; }
   .hero { align-items: flex-end; min-height: max(740px, 100svh); }
-  .scene-plate { inset: 0; background-position: 64% top; background-size: auto 75%; }
+  .scene-plate { --scene-fade-start: 380px; --scene-fade-end: 520px; background-position: 75% top; background-size: auto 470px; }
   .scene-vignette { background: linear-gradient(0deg, #080e18 3%, rgba(8, 14, 24, .98) 31%, transparent 63%), linear-gradient(180deg, rgba(8, 14, 24, .2), transparent 36%); }
   .scene-stars { left: 28%; bottom: 58%; }
   .scene-haze { background: radial-gradient(ellipse 45% 30% at 64% 42%, rgba(66, 134, 201, .22), transparent 75%); }
   .scene-meteor { top: 24%; left: 63%; }
-  .character-boy { width: 165px; left: 52%; bottom: 50%; }
-  .character-girl { width: 132px; left: 77%; bottom: 52%; }
+  .character-boy { width: 200px; left: 48%; top: 235px; }
+  .character-girl { width: 180px; left: 77%; top: 260px; }
   .hero-content { width: calc(100% - 52px); min-width: 0; max-width: 580px; margin: 0 26px 110px; }
   .hero-kicker { margin-bottom: 13px; }
   .hero h1 { font-size: clamp(3.2rem, 11vw, 5.6rem); }
@@ -112,7 +113,7 @@ a:focus-visible { outline: 2px solid #a7d5fb; outline-offset: 5px; }
 }
 @media (min-width: 501px) and (max-width: 740px) {
   .hero { align-items: center; }
-  .scene-plate { background-position: 64% center; background-size: cover; }
+  .scene-plate { --scene-fade-start: 390px; --scene-fade-end: 540px; background-position: right top; background-size: auto 500px; }
   .scene-vignette { background: linear-gradient(90deg, rgba(5, 9, 17, .82), rgba(5, 9, 17, .34) 46%, transparent 75%), linear-gradient(0deg, #080e18, transparent 22%); }
   .hero-content { width: 45%; max-width: none; margin: 76px 0 0 26px; }
   .hero h1 { font-size: clamp(1.85rem, 5.4vw, 2.65rem); }
@@ -120,14 +121,12 @@ a:focus-visible { outline: 2px solid #a7d5fb; outline-offset: 5px; }
   .primary-action { min-height: 47px; gap: 18px; padding-inline: 14px; font-size: .8rem; }
   .terminal { padding-inline: 10px; }
   .terminal-command { font-size: .61rem; }
-  .character-boy { left: 67%; bottom: 14%; width: clamp(165px, 29vw, 215px); }
-  .character-girl { left: 86%; bottom: 18%; width: clamp(130px, 22vw, 170px); }
+  .character-boy { left: 67%; top: 246px; width: 220px; }
+  .character-girl { left: 85%; top: 274px; width: 200px; }
 }
 @media (max-width: 500px) {
   .hero { min-height: max(1020px, 100svh); }
-  .scene-plate { background-position: 61% top; background-size: auto 580px; }
-  .character-boy { left: 48%; bottom: 50%; width: 145px; }
-  .character-girl { left: 77%; bottom: 52%; width: 115px; }
+  .scene-plate { --scene-fade-start: 380px; --scene-fade-end: 520px; background-position: 75% top; background-size: auto 470px; }
   .hero-content { margin-bottom: 93px; }
   .hero h1 { font-size: clamp(2rem, 9.5vw, 2.4rem); }
   .hero-description { font-size: .93rem; }

@@ -15,7 +15,7 @@ Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və v
 
 Firebase məlumatları daxil edilməsə də ön səhifə açılır.
 
-Ön səhnənin generasiya olunmuş orijinal şəkilləri `public/scene/window-space.webp`, `public/scene/boy.webp` və `public/scene/girl.webp` fayllarındadır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
+Ön səhnənin generasiya olunmuş şəkilləri `public/scene/window-space.webp`, `public/scene/boy-full.webp` və `public/scene/girl-full.webp` fayllarındadır. Pəncərənin miqyası dar ekranlarda ayrıca tənzimlənir; uşaqların tam boy şəkilləri ayaqların qəfil kəsilməsinin qarşısını alır. Hərəkət `src/style.css` və `src/main.js` ilə qurulub. Hərəkəti azaltma ayarı aktiv olan istifadəçilər üçün səhnə sabit göstərilir.
 
 ## Firebase
 

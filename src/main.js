@@ -3,8 +3,8 @@ import { firebaseReady } from './firebase.js'
 
 const app = document.querySelector('#app')
 app.dataset.firebaseReady = String(firebaseReady)
-const boyImage = `${import.meta.env.BASE_URL}scene/boy.webp`
-const girlImage = `${import.meta.env.BASE_URL}scene/girl.webp`
+const boyImage = `${import.meta.env.BASE_URL}scene/boy-full.webp`
+const girlImage = `${import.meta.env.BASE_URL}scene/girl-full.webp`
 
 app.innerHTML = `
   <div class="site-shell">
