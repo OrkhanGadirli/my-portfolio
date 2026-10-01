@@ -3,7 +3,7 @@ import { firebaseReady } from './firebase.js'
 
 const app = document.querySelector('#app')
 app.dataset.firebaseReady = String(firebaseReady)
-const humanoidVideo = `${import.meta.env.BASE_URL}scene/humanoid-scrub.mp4`
+const humanoidVideo = `${import.meta.env.BASE_URL}scene/humanoid-precise.mp4`
 const humanoidPoster = `${import.meta.env.BASE_URL}scene/humanoid-poster.webp`
 
 app.innerHTML = `
@@ -108,51 +108,52 @@ let heroVisible = false
 let pointerRatio = null
 let targetTime = null
 let seekFrame = 0
+const videoFps = 24
 
-const seekTowardPointer = () => {
+const seekToPointer = () => {
   seekFrame = 0
-  if (!mouseScrub.matches || reducedMotion.matches || !heroVisible || document.hidden || video.seeking || targetTime === null) return
-  const gap = targetTime - video.currentTime
-  if (Math.abs(gap) < 0.025) return
-  video.currentTime = clamp(video.currentTime + gap * 0.45, 0, video.duration - 0.02)
+  if (!mouseScrub.matches || reducedMotion.matches || !heroVisible || document.hidden || targetTime === null) return
+  if (Math.abs(targetTime - video.currentTime) < 1 / (videoFps * 2)) return
+  video.currentTime = targetTime
 }
 
 const scheduleSeek = () => {
-  if (!seekFrame) seekFrame = requestAnimationFrame(seekTowardPointer)
+  if (!seekFrame) seekFrame = requestAnimationFrame(seekToPointer)
 }
 
-const timeForPointer = (ratio) => 0.04 + ratio * (video.duration - 0.08)
+const timeForPointer = (ratio) => {
+  const frameCount = Math.round(video.duration * videoFps)
+  return Math.round(ratio * (frameCount - 1)) / videoFps
+}
 
 hero.addEventListener('pointermove', (event) => {
   if (!mouseScrub.matches || reducedMotion.matches) return
   const bounds = hero.getBoundingClientRect()
-  pointerRatio = clamp((event.clientX - bounds.left) / bounds.width, 0, 1)
+  const x = clamp((event.clientX - bounds.left) / bounds.width, 0, 1)
+  const faceCenter = 0.7
+  pointerRatio = x <= faceCenter ? x / faceCenter / 2 : 0.5 + (x - faceCenter) / (1 - faceCenter) / 2
   if (Number.isFinite(video.duration)) {
     targetTime = timeForPointer(pointerRatio)
     scheduleSeek()
   }
-  hero.style.setProperty('--pointer-x', `${(pointerRatio - 0.5) * 10}px`)
-  hero.style.setProperty('--pointer-y', `${((event.clientY - bounds.top) / bounds.height - 0.5) * 8}px`)
 })
 
 hero.addEventListener('pointerleave', () => {
   pointerRatio = null
   if (Number.isFinite(video.duration)) {
-    targetTime = video.duration / 2
+    targetTime = timeForPointer(0.5)
     scheduleSeek()
   }
-  hero.style.setProperty('--pointer-x', '0px')
-  hero.style.setProperty('--pointer-y', '0px')
 })
 
 const syncPlayback = () => {
   if (reducedMotion.matches || !heroVisible || document.hidden) {
     video.pause()
-    if (reducedMotion.matches && Number.isFinite(video.duration)) video.currentTime = video.duration / 2
+    if (reducedMotion.matches && Number.isFinite(video.duration)) video.currentTime = timeForPointer(0.5)
   } else if (mouseScrub.matches) {
     video.pause()
     if (Number.isFinite(video.duration)) {
-      targetTime = pointerRatio === null ? video.duration / 2 : timeForPointer(pointerRatio)
+      targetTime = timeForPointer(pointerRatio === null ? 0.5 : pointerRatio)
       scheduleSeek()
     }
   } else {

@@ -15,7 +15,7 @@ Hazırda portfolio, sınanmış üçüncü tərəf repoları, məqalələr və v
 
 Firebase məlumatları daxil edilməsə də ön səhifə açılır.
 
-Ön səhnədə istifadəçinin təqdim etdiyi videodakı humanoid göstərilir: `public/scene/humanoid-scrub.mp4`. Mənbə: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4`. Video kursorla idarəetmə üçün 1080p ölçüsünə və qısa açar kadr aralığına uyğunlaşdırılıb. Masaüstündə kursorun üfüqi yeri başın sola və ya sağa dönməsini idarə edir; dar və toxunma ekranlarında video səssiz və dövrü oynayır. Səhnə ekrandan çıxanda video dayanır. Hərəkəti azaltma ayarında orta kadr sabit göstərilir.
+Ön səhnədə istifadəçinin təqdim etdiyi videodakı humanoid göstərilir: `public/scene/humanoid-precise.mp4`. Mənbə: `https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260601_110537_3a579fa0-7bbc-4d94-9d25-0e816c7840f5.mp4`. Video kursorla dəqiq idarəetmə üçün 720p ölçüsündə hər kadrı ayrıca açar kadrla hazırlanıb. Masaüstündə kursorun üfüqi yeri başın sola və ya sağa dönməsini birbaşa idarə edir; dar və toxunma ekranlarında video səssiz və dövrü oynayır. Səhnə ekrandan çıxanda video dayanır. Hərəkəti azaltma ayarında orta kadr sabit göstərilir.
 
 ## Firebase
 
